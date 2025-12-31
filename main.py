@@ -1,5 +1,3 @@
 import tkinter
-import os
 
-def setup():
-    
+import os
