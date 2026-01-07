@@ -10,7 +10,7 @@ def get_path():
     path = entry.get()
     config = configparser.ConfigParser()
     config.read('config.conf')
-    config.set('URL','file_path', path)
+    config.set('path','file_path', path)
     with open('config.conf','w') as f:
             config.write(f)
 

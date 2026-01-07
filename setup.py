@@ -7,7 +7,7 @@ def create_config():
 
     if check_if_config_file_exists is False:
         config = configparser.ConfigParser()
-        config['URL'] = {'file_path' : ""}
+        config['path'] = {'file_path' : ""}
         config['exceptions'] = {}
 
         with open('config.conf','w') as config_file:
