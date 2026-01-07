@@ -1,7 +1,6 @@
 import configparser
 import os
 
-
 def create_config():
     config_file_path = "./config.conf"
     check_if_config_file_exists = os.path.exists(config_file_path)
@@ -14,4 +13,3 @@ def create_config():
         with open('config.conf','w') as config_file:
             config.write(config_file)
 
-create_config()
