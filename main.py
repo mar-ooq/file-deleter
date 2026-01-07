@@ -1,21 +1,26 @@
 from tkinter import *
 from tkinter import ttk, filedialog
 import os
+import configparser
+import os
 from pathlib import Path
 from setup import create_config
 
-print("New")
 def get_path():
     path = entry.get()
-    print(path)
-
-create_config()
+    config = configparser.ConfigParser()
+    config.read('config.conf')
+    config.set('URL','file_path', path)
+    with open('config.conf','w') as f:
+            config.write(f)
 
 def browse_folder():
     folder = filedialog.askdirectory(title="Wybierz folder")
     if folder:
         entry.delete(0, END)
         entry.insert(0, folder)
+
+create_config()
 
 root = Tk(screenName="File Deleter", baseName=None,className='Tk', useTk=True, sync = False, use=None)
 
@@ -47,12 +52,11 @@ enter_path_btn.pack()
 label2 = Label(root, text = "File extensions to exclude: ", font =("Arial", 14))
 
 #listing files
-
-# def list_files(directory_path):
-#     files = os.listdir(directory_path)
-#     for f in files:
-#         text = Message(root, text=f, width=300)
-#         text.pack()
+def list_files(directory_path):
+    files = os.listdir(directory_path)
+    for f in files:
+        text = Message(root, text=f, width=300)
+        text.pack()
 
 
 
