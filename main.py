@@ -6,6 +6,16 @@ import os
 from pathlib import Path
 from setup import create_config
 
+#listing files
+def list_files():
+    file = configparser.ConfigParser()
+    file.read('config.conf')
+    directory_path = file.get('path','file_path')
+    files = os.listdir(directory_path)
+    for f in files:
+        text = Message(root, text=f, width=300)
+        text.pack()
+
 def get_path():
     path = entry.get()
     config = configparser.ConfigParser()
@@ -45,25 +55,10 @@ browse_btn = Button(input_frame, text="Search", command=browse_folder, font=("Ar
 browse_btn.pack(side=LEFT, padx=5)
 
 #Create button
-enter_path_btn = Button(root, font=("Arial", 14), width=15,height=1,anchor="center", text = "Enter", command=get_path)
+enter_path_btn = Button(root, font=("Arial", 14), width=15,height=1,anchor="center", text = "Enter", command=lambda:[get_path(), list_files()])
 enter_path_btn.pack()
 
 #2nd label
 label2 = Label(root, text = "File extensions to exclude: ", font =("Arial", 14))
-
-#listing files
-def list_files(directory_path):
-    files = os.listdir(directory_path)
-    for f in files:
-        text = Message(root, text=f, width=300)
-        text.pack()
-
-
-
-
-
-
-#list_files()
-
 
 root.mainloop()
