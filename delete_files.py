@@ -33,20 +33,25 @@ def delete_files():
     file.read('config.conf')
     directory_path = file.get('path','file_path')
     files = os.listdir(directory_path)
-    exceptions = file.get('exceptions','exceptions')
+    exceptions = file.get('exceptions','exceptions').split(',')
     for f in files:
-        f_extension = f.rsplit(".",1)[-1]
+        full_path = os.path.join(directory_path,f)
+        if is_protected_path(full_path):
+            print(f"{f} is protected! The program skipped it")
+            continue
+
+        f_extension = f.rsplit(".",1)[-1] if '.' in f else ''
         if f_extension in exceptions :
             print(f"file {f} skipped, found in exceptions list!")
         else:
             try:
-                if os.path.isfile(f"{directory_path}/{f}"):
-                    os.remove(f"{directory_path}/{f}")
+                if os.path.isfile(full_path):
+                    os.remove(full_path)
                     print(f"file {f} deleted")
-                elif os.path.isdir(f"{directory_path}/{f}"):
-                    shutil.rmtree(f"{directory_path}/{f}")
+                elif os.path.isdir(full_path):
+                    shutil.rmtree(full_path)
                 
             except PermissionError:
                 print(f"File {f} not deleted, permission denied")
-            except Exception:
-                print("Other problem occurred")
+            except Exception as e:
+                print(f"Other problem occurred: {e}")
