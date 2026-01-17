@@ -5,17 +5,19 @@ import configparser
 import os
 from pathlib import Path
 from setup import create_config
+from delete_files import delete_files
 
 #listing files
 def list_files():
     file = configparser.ConfigParser()
     file.read('config.conf')
     directory_path = file.get('path','file_path')
+    
+    # TERAZ TUTAJ - WPISZ DO FRAME'a
     files = os.listdir(directory_path)
     for f in files:
-        text = Message(root, text=f, width=300)
-        text.pack()
-
+        text = Label(scrollable_frame, text=f, width=30, anchor='w')
+        text.pack(pady=2, fill="x")
 def get_path():
     path = entry.get()
     config = configparser.ConfigParser()
@@ -36,7 +38,7 @@ root = Tk(screenName="File Deleter", baseName=None,className='Tk', useTk=True, s
 
 #setting the size of a window
 root.geometry("400x400")
-root.minsize(300,300)
+root.minsize(400,400)
 root.maxsize(600,600)
 
 #Create a label
@@ -58,7 +60,30 @@ browse_btn.pack(side=LEFT, padx=5)
 enter_path_btn = Button(root, font=("Arial", 14), width=15,height=1,anchor="center", text = "Enter", command=lambda:[get_path(), list_files()])
 enter_path_btn.pack()
 
+#Create Frame
+frame=Frame(root,width=300,height=100)
+frame.pack(expand=True, fill=BOTH)
+    
+canvas=Canvas(frame,width=300,height=100)
+
+vbar=Scrollbar(frame,orient=VERTICAL)
+vbar.pack(side=RIGHT,fill=Y)
+vbar.config(command=canvas.yview)
+
+canvas.config(yscrollcommand=vbar.set)
+canvas.pack(side=LEFT,expand=True,fill=BOTH)
+
+# SCROLLABLE FRAME W Canvas
+scrollable_frame = Frame(canvas)
+scrollable_frame.bind(
+    "<Configure>",
+    lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+)
+    
+canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+
 #2nd label
 label2 = Label(root, text = "File extensions to exclude: ", font =("Arial", 14))
+
 
 root.mainloop()
