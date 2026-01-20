@@ -61,17 +61,22 @@ enter_path_btn = Button(root, font=("Arial", 14), width=15,height=1,anchor="cent
 enter_path_btn.pack()
 
 #Create Frame
-frame=Frame(root,width=300,height=100)
-frame.pack(expand=True, fill=BOTH)
+frame=Frame(root,width=300,height=150)
+frame.pack(expand=False, fill=BOTH)
     
-canvas=Canvas(frame,width=300,height=100)
+canvas=Canvas(frame,width=300,height=150)
+canvas.pack(side=LEFT,expand=True,fill=BOTH)
 
-vbar=Scrollbar(frame,orient=VERTICAL)
+vbar_container = Frame(frame, height=150, width=16)
+vbar_container.pack_propagate(False)
+vbar_container.pack(side=RIGHT, fill="y")
+
+
+vbar=Scrollbar(vbar_container,orient=VERTICAL, width=12)
 vbar.pack(side=RIGHT,fill=Y)
 vbar.config(command=canvas.yview)
 
 canvas.config(yscrollcommand=vbar.set)
-canvas.pack(side=LEFT,expand=True,fill=BOTH)
 
 # SCROLLABLE FRAME W Canvas
 scrollable_frame = Frame(canvas)
